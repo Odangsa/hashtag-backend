@@ -1,3 +1,5 @@
+### jira -> WA-16 : 데이터 수집 및 DB 연동
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
