@@ -1,46 +1,63 @@
 package com.odangsa.hashtag.controller;
 
-import com.odangsa.hashtag.dto.ResponseDTO;
-import com.odangsa.hashtag.dto.SectionDTO;
-import lombok.extern.slf4j.Slf4j;
+import com.odangsa.hashtag.dto.ReservationRequest;
+import com.odangsa.hashtag.dto.ReservationResponse;
+import com.odangsa.hashtag.dto.ResultResponse;
+import com.odangsa.hashtag.service.ReservationService;
+import com.odangsa.hashtag.utils.Result;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-@Slf4j
+@RequiredArgsConstructor
 @RestController
-@RequestMapping("hashtag")
 public class HashtagController {
-    @PostMapping
-    public ResponseEntity<?> recommendHashtag(
-            @RequestParam MultipartFile file, @RequestParam String place){
-        String filename = "";
-        if(!file.isEmpty()){
-            filename = file.getOriginalFilename();
-        }
 
-        List<String> list = new ArrayList<>();
-        List<String> list2 = new ArrayList<>();
-        for(int i=0; i<10; i++){
-            list.add(filename);
-        }
-        SectionDTO a = SectionDTO.builder().title(filename).hashtags(list).build();
+    private final ReservationService reservationService;
 
-        for(int i=0; i<10; i++){
-            list2.add(place);
-        }
-        SectionDTO b = SectionDTO.builder().title(place).hashtags(list2).build();
-        List<SectionDTO> dtos = new ArrayList<>();
-        dtos.add(a);
-        dtos.add(b);
+    @PostMapping("/{userId}/hashtag")
+    public ResponseEntity<?> requestHashtags(
+            @PathVariable("userId") String userId,
+            @RequestParam MultipartFile picture,
+            @RequestParam String place){
 
-        ResponseDTO<SectionDTO> response = ResponseDTO.<SectionDTO>builder().data(dtos).build();
-        return ResponseEntity.ok().body(response);
+        // Instead of AI
+        List<String> categories = new ArrayList<>();
+        String filename ="";
+        if(!picture.isEmpty())
+            filename = picture.getOriginalFilename();
+
+        categories.add(filename);
+        for(String word : place.split(" "))
+            categories.add(word);
+
+        // Reservation
+        ReservationRequest request = new ReservationRequest(userId, categories);
+        reservationService.registerResult(request);
+
+        return ResponseEntity.ok().body("ok");
+    }
+
+    @GetMapping("/{userId}/hashtag")
+    public ResponseEntity<?> requestHashtags(@PathVariable("userId") String userId){
+        // Solve Reservation
+        ReservationResponse reservationResponse = reservationService.getResult(userId);
+        if(!reservationResponse.isSuccess())
+            return ResponseEntity.badRequest().body(null);
+
+        // category 넣어주기
+        List<String> dummy = new ArrayList<String>(List.of("#hello", "#hi", "#Guten Morgen"));
+        AtomicInteger index = new AtomicInteger();
+        List<Result> results = reservationResponse.getCategories().stream().map(e->
+            Result.builder().id(index.getAndIncrement()).title(e).hashtagList(dummy).build()).collect(Collectors.toList());
+        ResultResponse resultResponse = new ResultResponse(reservationResponse.isSuccess(), results);
+
+        return ResponseEntity.ok().body(resultResponse);
     }
 }
