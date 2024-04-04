@@ -10,8 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -39,9 +38,10 @@ public class HashtagController {
 
         // Reservation
         ReservationRequest request = new ReservationRequest(userId, categories);
-        reservationService.registerResult(request);
-
-        return ResponseEntity.ok().body("ok");
+        boolean success = reservationService.registerResult(request);
+        Map<String, Boolean> result = new HashMap<>();
+        result.put("success", success);
+        return ResponseEntity.ok().body(result);
     }
 
     @GetMapping("/{userId}/hashtag")

@@ -18,10 +18,16 @@ public class ReservationService {
     private final CustomerService customerService;
     private final CategoryOrderService categoryOrderService;
 
-    public void registerResult(ReservationRequest request){
-        customerService.save(request.getUserId());
-        for(String category: request.getCategories())
-            categoryOrderService.save(new AddCategoryOrderRequest(request.getUserId(),category));
+    public boolean registerResult(ReservationRequest request){
+        try {
+            customerService.findByUserId(request.getUserId());
+            return false;
+        } catch(IllegalArgumentException e){
+            customerService.save(request.getUserId());
+            for(String category: request.getCategories())
+                categoryOrderService.save(new AddCategoryOrderRequest(request.getUserId(),category));
+            return true;
+        }
     }
 
     public ReservationResponse getResult(String userId){
