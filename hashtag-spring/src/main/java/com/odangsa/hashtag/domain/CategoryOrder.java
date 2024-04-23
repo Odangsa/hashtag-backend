@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Table(name = "CategoryOrders")
+@Table(name = "categoryOrder")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CategoryOrder {
