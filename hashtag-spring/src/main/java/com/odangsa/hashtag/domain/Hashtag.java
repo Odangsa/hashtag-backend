@@ -4,10 +4,15 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "hashtag")
 public class Hashtag {
@@ -17,5 +22,5 @@ public class Hashtag {
     private Long id;
 
     private String name;
-    private Long count;
+    private Integer count;
 }

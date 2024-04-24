@@ -1,14 +1,13 @@
 package com.odangsa.hashtag;
 
-import com.odangsa.hashtag.domain.CategoryOrder;
-import com.odangsa.hashtag.domain.Customer;
-import com.odangsa.hashtag.persistence.CategoryOrderRepository;
-import com.odangsa.hashtag.persistence.CustomerRepository;
+import com.odangsa.hashtag.domain.*;
+import com.odangsa.hashtag.persistence.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,6 +19,12 @@ public class RepositoryTests {
     private CustomerRepository customerRepository;
     @Autowired
     private CategoryOrderRepository categoryOrderRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryHashtagRepository categoryHashtagRepository;
+    @Autowired
+    private HashtagRepository hashtagRepository;
 
     @Test
     public void saveCustomertTest(){
@@ -69,6 +74,37 @@ public class RepositoryTests {
             log.info("userid -> {}",x.getUserId());
             log.info("category -> {}",x.getCategory());
         });
+    }
 
+    @Test
+    @Transactional
+    public void CategoryHashtagTest(){
+        Category category = new Category();
+        category.setName("초밥");
+        categoryRepository.save(category);
+
+        Hashtag hashtag = new Hashtag();
+        hashtag.setName("새우초밥");
+        hashtag.setCount(1000);
+        hashtagRepository.save(hashtag);
+
+        Hashtag hashtag2 = new Hashtag();
+        hashtag2.setName("광어초밥");
+        hashtag2.setCount(2000);
+        hashtagRepository.save(hashtag2);
+
+        CategoryHashtag categoryHashtag = new CategoryHashtag();
+        categoryHashtag.setCategory(category);
+        categoryHashtag.setHashtag(hashtag);
+        categoryHashtagRepository.save(categoryHashtag);
+
+        CategoryHashtag categoryHashtag2 = new CategoryHashtag();
+        categoryHashtag2.setCategory(category);
+        categoryHashtag2.setHashtag(hashtag2);
+        categoryHashtagRepository.save(categoryHashtag2);
+
+        log.info("saved Category : " + categoryRepository.findByName("초밥").get().getName());
+        for(CategoryHashtag ch : categoryRepository.findByName("초밥").get().getCategoryHashtags())
+            log.info("saved Hashtag : " + ch.getHashtag().getName());
     }
 }
