@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Setter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "hashtag_category")
+@Table(name = "category_hashtag")
 @Entity
 public class CategoryHashtag {
     @Id
@@ -20,11 +20,11 @@ public class CategoryHashtag {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_name", referencedColumnName = "category_name")
     private Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hashtag_id")
+    @JoinColumn(name = "hashtag_name", referencedColumnName = "hashtag_name")
     private Hashtag hashtag;
 
     public void setCategory(Category category){

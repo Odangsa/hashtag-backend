@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Hashtag {
     @Column(name = "hashtag_id")
     private Long id;
 
-    private String name;
+    @Column(name = "hashtag_name", unique = true, nullable = false)
+    private String hashtagName;
     private Integer count;
 }

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,8 @@ public class Category {
     @Column(name = "category_id")
     private Long id;
 
-    private String name;
+    @Column(name = "category_name", unique = true, nullable = false)
+    private String categoryName;
 
     @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<CategoryHashtag> categoryHashtags = new ArrayList<>();

@@ -80,16 +80,16 @@ public class RepositoryTests {
     @Transactional
     public void CategoryHashtagTest(){
         Category category = new Category();
-        category.setName("초밥");
+        category.setCategoryName("초밥");
         categoryRepository.save(category);
 
         Hashtag hashtag = new Hashtag();
-        hashtag.setName("새우초밥");
+        hashtag.setHashtagName("새우초밥");
         hashtag.setCount(1000);
         hashtagRepository.save(hashtag);
 
         Hashtag hashtag2 = new Hashtag();
-        hashtag2.setName("광어초밥");
+        hashtag2.setHashtagName("광어초밥");
         hashtag2.setCount(2000);
         hashtagRepository.save(hashtag2);
 
@@ -103,8 +103,8 @@ public class RepositoryTests {
         categoryHashtag2.setHashtag(hashtag2);
         categoryHashtagRepository.save(categoryHashtag2);
 
-        log.info("saved Category : " + categoryRepository.findByName("초밥").get().getName());
+        log.info("saved Category : " + categoryRepository.findByName("초밥").get().getCategoryName());
         for(CategoryHashtag ch : categoryRepository.findByName("초밥").get().getCategoryHashtags())
-            log.info("saved Hashtag : " + ch.getHashtag().getName());
+            log.info("saved Hashtag : " + ch.getHashtag().getHashtagName());
     }
 }
