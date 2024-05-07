@@ -3,9 +3,11 @@ package com.odangsa.hashtag.controller;
 import com.odangsa.hashtag.dto.ReservationRequest;
 import com.odangsa.hashtag.dto.ReservationResponse;
 import com.odangsa.hashtag.dto.ResultResponse;
+import com.odangsa.hashtag.service.RecommendService;
 import com.odangsa.hashtag.service.ReservationService;
 import com.odangsa.hashtag.utils.Result;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class HashtagController {
 
     private final ReservationService reservationService;
+    private final RecommendService recommendService;
 
     @PostMapping("/{userId}/hashtag")
     public ResponseEntity<?> requestHashtags(
@@ -27,14 +30,15 @@ public class HashtagController {
             @RequestParam String place){
 
         // Instead of AI
-        List<String> categories = new ArrayList<>();
-        String filename ="";
-        if(!picture.isEmpty())
-            filename = picture.getOriginalFilename();
-
-        categories.add(filename);
-        for(String word : place.split(" "))
-            categories.add(word);
+//        List<String> categories = new ArrayList<>();
+//        String filename ="";
+//        if(!picture.isEmpty())
+//            filename = picture.getOriginalFilename();
+//
+//        categories.add(filename);
+//        for(String word : place.split(" "))
+//            categories.add(word);
+        List<String> categories = recommendService.recommendCategory(picture, place);
 
         // Reservation
         ReservationRequest request = new ReservationRequest(userId, categories);

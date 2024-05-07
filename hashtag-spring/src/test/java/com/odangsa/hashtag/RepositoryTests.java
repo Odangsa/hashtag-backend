@@ -103,8 +103,8 @@ public class RepositoryTests {
         categoryHashtag2.setHashtag(hashtag2);
         categoryHashtagRepository.save(categoryHashtag2);
 
-        log.info("saved Category : " + categoryRepository.findByName("초밥").get().getCategoryName());
-        for(CategoryHashtag ch : categoryRepository.findByName("초밥").get().getCategoryHashtags())
+        log.info("saved Category : " + categoryRepository.findByCategoryName("초밥").get().getCategoryName());
+        for(CategoryHashtag ch : categoryRepository.findByCategoryName("초밥").get().getCategoryHashtags())
             log.info("saved Hashtag : " + ch.getHashtag().getHashtagName());
     }
 }

@@ -21,34 +21,34 @@ import javax.sql.DataSource;
 @RequiredArgsConstructor
 public class FileReaderJobConfig {
 
-    private static final int chunkSize = 5999; //데이터 처리할 row size
-    private final CsvReader csvReader;
-    private final CsvDataWriter csvDataWriter;
-    private final CsvRelationWriter csvRelationWriter;
-
-    @Bean
-    public Job myJob(JobRepository jobRepository, Step step1, Step step2){
-        return new JobBuilder("myJob", jobRepository)
-                .start(step1)
-                .next(step2)
-                .build();
-    }
-
-    @Bean
-    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager){
-        return new StepBuilder("step1", jobRepository)
-                .<CsvReaderDto,CsvReaderDto>chunk(chunkSize, transactionManager)
-                .reader(csvReader.csvScheduleReader())
-                .writer(csvDataWriter)
-                .build();
-    }
-
-    @Bean
-    public Step step2(JobRepository jobRepository, PlatformTransactionManager transactionManager){
-        return new StepBuilder("step2", jobRepository)
-                .<CsvReaderDto,CsvReaderDto>chunk(chunkSize, transactionManager)
-                .reader(csvReader.csvScheduleReader())
-                .writer(csvRelationWriter)
-                .build();
-    }
+//    private static final int chunkSize = 5999; //데이터 처리할 row size
+//    private final CsvReader csvReader;
+//    private final CsvDataWriter csvDataWriter;
+//    private final CsvRelationWriter csvRelationWriter;
+//
+//    @Bean
+//    public Job myJob(JobRepository jobRepository, Step step1, Step step2){
+//        return new JobBuilder("myJob", jobRepository)
+//                .start(step1)
+//                .next(step2)
+//                .build();
+//    }
+//
+//    @Bean
+//    public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager){
+//        return new StepBuilder("step1", jobRepository)
+//                .<CsvReaderDto,CsvReaderDto>chunk(chunkSize, transactionManager)
+//                .reader(csvReader.csvScheduleReader())
+//                .writer(csvDataWriter)
+//                .build();
+//    }
+//
+//    @Bean
+//    public Step step2(JobRepository jobRepository, PlatformTransactionManager transactionManager){
+//        return new StepBuilder("step2", jobRepository)
+//                .<CsvReaderDto,CsvReaderDto>chunk(chunkSize, transactionManager)
+//                .reader(csvReader.csvScheduleReader())
+//                .writer(csvRelationWriter)
+//                .build();
+//    }
 }
