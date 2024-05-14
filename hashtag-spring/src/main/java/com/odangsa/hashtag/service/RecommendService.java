@@ -5,6 +5,9 @@ import com.clarifai.credentials.ClarifaiCallCredentials;
 import com.clarifai.grpc.api.*;
 import com.clarifai.grpc.api.status.StatusCode;
 import com.google.protobuf.ByteString;
+import com.odangsa.hashtag.domain.Category;
+import com.odangsa.hashtag.domain.CategoryHashtag;
+import com.odangsa.hashtag.persistence.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,23 +17,20 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class RecommendService {
 
+    private final CategoryRepository categoryRepository;
+
     static final String PAT = "0042a41f1b11481589a11b8a5790c6a1";
-    // Specify the correct user_id/app_id pairings
-    // Since you're making inferences outside your app's scope
     static final String USER_ID = "clarifai";
     static final String APP_ID = "main";
-    // Change these to whatever model and image URL you want to use
     static final String MODEL_ID = "general-image-recognition-vit";
     static final String MODEL_VERSION_ID = "1bf8b41a7c154eaca6203643ff6a75b6";
-    static final String IMAGE_URL = "https://samples.clarifai.com/metro-north.jpg";
 
     public List<String> recommendCategory(MultipartFile picture, String place){
         List<String> categories = new ArrayList<>();
@@ -48,11 +48,10 @@ public class RecommendService {
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(picture.getBytes());
         fos.close();
-        Output output = picture2keyword(file);
-        return keyword2category(output);
+        return keyword2category(picture2keyword(file));
     }
 
-    private Output picture2keyword(File file) throws IOException{
+    private Map<String, Float> picture2keyword(File file) throws IOException{
         V2Grpc.V2BlockingStub stub = V2Grpc.newBlockingStub(ClarifaiChannel.INSTANCE.getGrpcChannel())
                 .withCallCredentials(new ClarifaiCallCredentials(PAT));
 
@@ -81,14 +80,58 @@ public class RecommendService {
         // Since we have one input, one output will exist here.
         Output output = postModelOutputsResponse.getOutputs(0);
 
-        return output;
+        Map<String, Float> results = new HashMap<>();
+        for (Concept concept : output.getData().getConceptsList()) {
+            results.put(concept.getName(), concept.getValue());
+        }
+        log.info("hmm : " + output.getData().getConceptsList().size());
+
+        return results;
     }
 
-    private List<String> keyword2category(Output output){
-        List<String> categories = new ArrayList<>();
-        for (Concept concept : output.getData().getConceptsList()) {
-            categories.add(concept.getName());
+    private List<String> keyword2category(Map<String, Float> results){
+        List<String> keywords = results.keySet().stream().toList();
+
+        // category selection
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryHashtag> chs;
+        Map<String, Double> map = new HashMap<String, Double>();
+        for(Category category : categories){
+            chs = category.getCategoryHashtags();
+            Double similarity = 0d;
+            for(CategoryHashtag ch : chs){
+                String hashtag = ch.getHashtag().getHashtagName();
+                //calculate similarity
+                for(String keyword : keywords){
+//                    similarity += word2Vec.similarity(hashtag, keyword);
+                }
+            }
+            map.put(category.getCategoryName(), similarity);
         }
-        return categories;
+        List<Map.Entry<String, Double>> scores = new ArrayList<>(map.entrySet());
+        Collections.sort(scores, new Comparator<Map.Entry<String, Double>>() {
+            @Override
+            public int compare(Map.Entry<String, Double> o1, Map.Entry<String, Double> o2) {
+                if(o1.getValue() > o2.getValue())
+                    return -1;
+                else if(o1.getValue() < o2.getValue())
+                    return 1;
+
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+
+        for(int i=0; i<3; i++){
+            log.info("Category : "+scores.get(i).getKey()+", Score : "+scores.get(i).getValue());
+        }
+
+        List<String> result = new ArrayList<>();
+        // highest 3 picked
+        for(int i=0; i<3; i++){
+            result.add(scores.get(i).getKey());
+        }
+//        return result;
+
+        return keywords;
     }
 }

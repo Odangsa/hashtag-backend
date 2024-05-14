@@ -1,8 +1,7 @@
-package com.odangsa.hashtag.utils;
+package com.odangsa.hashtag.common;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 

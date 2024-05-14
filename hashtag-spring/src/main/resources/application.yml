@@ -18,3 +18,12 @@ spring:
       enabled: true
       max-request-size: 30MB
       max-file-size: 30MB
+  ai:
+    openai:
+      api-key: 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
+      chat:
+        options:
+          model: gpt-3.5-turbo
+          temperature: 0.7
+
+

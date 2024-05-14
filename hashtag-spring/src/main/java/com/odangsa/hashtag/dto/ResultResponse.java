@@ -1,9 +1,7 @@
 package com.odangsa.hashtag.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.odangsa.hashtag.utils.Result;
+import com.odangsa.hashtag.common.Result;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
