@@ -26,7 +26,7 @@ public record ChatGptRequest(String model, List<Message> messages,
         }
 
         return new ChatGptRequest(
-                "gpt-3.5-turbo",
+                "gpt-4o",
                 Arrays.asList(
                         new Message(
                                 "system",

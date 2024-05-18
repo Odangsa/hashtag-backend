@@ -1,7 +1,10 @@
 package com.odangsa.hashtag.persistence;
 
-import com.odangsa.hashtag.domain.CategoryHashtag;
+import com.odangsa.hashtag.domain.SuperEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CategoryHashtagRepository extends JpaRepository<CategoryHashtag, Long> {
+import java.util.List;
+
+public interface CategoryHashtagRepository extends JpaRepository<SuperEntity, Long> {
+    List<SuperEntity> findAllByCategory(String category);
 }

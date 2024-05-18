@@ -7,11 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@DataJpaTest
+@SpringBootTest
 @Slf4j
 public class RepositoryTests {
 
@@ -79,32 +80,16 @@ public class RepositoryTests {
     @Test
     @Transactional
     public void CategoryHashtagTest(){
-        Category category = new Category();
-        category.setCategoryName("초밥");
-        categoryRepository.save(category);
+        List<Category> categories = categoryRepository.findAll();
+        log.info("category : "+categories.get(0).getCategoryName());
+        List<Hashtag> hashtags = hashtagRepository.findAll();
+        log.info("hashtag : "+hashtags.get(0).getHashtagName());
+        List<SuperEntity> entities = categoryHashtagRepository.findAllByCategory(categories.get(0).getCategoryName());
+        int i = 1;
+        for(SuperEntity entity : entities){
+            log.info("[{}] : {} ",i,entity.getHashtagName());
+            i++;
+        }
 
-        Hashtag hashtag = new Hashtag();
-        hashtag.setHashtagName("새우초밥");
-        hashtag.setCount(1000);
-        hashtagRepository.save(hashtag);
-
-        Hashtag hashtag2 = new Hashtag();
-        hashtag2.setHashtagName("광어초밥");
-        hashtag2.setCount(2000);
-        hashtagRepository.save(hashtag2);
-
-        CategoryHashtag categoryHashtag = new CategoryHashtag();
-        categoryHashtag.setCategory(category);
-        categoryHashtag.setHashtag(hashtag);
-        categoryHashtagRepository.save(categoryHashtag);
-
-        CategoryHashtag categoryHashtag2 = new CategoryHashtag();
-        categoryHashtag2.setCategory(category);
-        categoryHashtag2.setHashtag(hashtag2);
-        categoryHashtagRepository.save(categoryHashtag2);
-
-        log.info("saved Category : " + categoryRepository.findByCategoryName("초밥").get().getCategoryName());
-        for(CategoryHashtag ch : categoryRepository.findByCategoryName("초밥").get().getCategoryHashtags())
-            log.info("saved Hashtag : " + ch.getHashtag().getHashtagName());
     }
 }

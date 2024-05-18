@@ -1,30 +1,34 @@
 package com.odangsa.hashtag.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-
+@Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-@Table(name="category")
+@Table(name = "category")
 public class Category {
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    private Long id;
-
-    @Column(name = "category_name", unique = true, nullable = false)
+    @Id
+    @Column(name = "categoryName")
     private String categoryName;
+    @Basic
+    @Column(name = "categoryCount")
+    private long categoryCount;
 
-    @OneToMany(mappedBy = "category", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<CategoryHashtag> categoryHashtags = new ArrayList<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category that = (Category) o;
+        return categoryCount == that.categoryCount && Objects.equals(categoryName, that.categoryName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(categoryName, categoryCount);
+    }
 }

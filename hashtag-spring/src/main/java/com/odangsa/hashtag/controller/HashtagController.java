@@ -28,16 +28,8 @@ public class HashtagController {
             @RequestParam MultipartFile picture,
             @RequestParam String place){
 
-        // Instead of AI
-//        List<String> categories = new ArrayList<>();
-//        String filename ="";
-//        if(!picture.isEmpty())
-//            filename = picture.getOriginalFilename();
-//
-//        categories.add(filename);
-//        for(String word : place.split(" "))
-//            categories.add(word);
-        List<String> categories = recommendService.recommendCategory(picture, place);
+//        List<String> categories = recommendService.recommendCategory(picture, place);
+        List<String> categories = null;
 
         // Reservation
         ReservationRequest request = new ReservationRequest(userId, categories);
