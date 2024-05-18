@@ -18,6 +18,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -47,7 +48,7 @@ public class GptService {
         for(String string : strings)
             categories.add(string.split(":")[1].strip());
 
-        return categories;
+        return List.copyOf(Set.copyOf(categories));
     }
 
     private String sendRequest(String requestBodyAsJson) throws Exception{

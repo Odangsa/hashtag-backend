@@ -84,7 +84,6 @@ public class RecommendService {
         for (Concept concept : output.getData().getConceptsList()) {
             results.put(concept.getName(), concept.getValue());
         }
-        log.info("hmm : " + output.getData().getConceptsList().size());
 
         return results;
     }
@@ -94,6 +93,8 @@ public class RecommendService {
 
         List<String> categories = gptService.chat(keywords);
 
+        for(String category : categories)
+            log.info("cat : "+category);
         return categories;
     }
 }

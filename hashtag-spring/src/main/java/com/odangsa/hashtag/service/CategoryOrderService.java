@@ -10,12 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class CategoryOrderService {
 
     private final CategoryOrderRepository categoryOrderRepository;
 
+    @Transactional("secondTransactionManager")
     public CategoryOrder save(AddCategoryOrderRequest request){
         return categoryOrderRepository.save(request.toEntity());
     }
@@ -24,6 +24,7 @@ public class CategoryOrderService {
         return categoryOrderRepository.findAllByUserId(userId);
     }
 
+    @Transactional("secondTransactionManager")
     public void deleteAllByUserId(String userId){
         categoryOrderRepository.deleteAllByUserId(userId);
     }

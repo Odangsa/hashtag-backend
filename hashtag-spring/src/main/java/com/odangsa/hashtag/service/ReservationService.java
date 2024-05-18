@@ -7,6 +7,7 @@ import com.odangsa.hashtag.dto.ReservationRequest;
 import com.odangsa.hashtag.dto.ReservationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class ReservationService {
     private final CustomerService customerService;
     private final CategoryOrderService categoryOrderService;
 
+    @Transactional("secondTransactionManager")
     public boolean registerResult(ReservationRequest request){
         try {
             customerService.findByUserId(request.getUserId());
