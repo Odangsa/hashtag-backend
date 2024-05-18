@@ -27,10 +27,11 @@ public class HashtagController {
     @PostMapping("/{userId}/hashtag")
     public ResponseEntity<?> requestHashtags(
             @PathVariable("userId") String userId,
-            @RequestParam MultipartFile picture,
-            @RequestParam String place){
+            @RequestParam MultipartFile picture
+//            ,@RequestParam String place
+    ){
 
-        List<String> categories = recommendService.recommendCategory(picture, place);
+        List<String> categories = recommendService.recommendCategory(picture, null);
 
         // Reservation
         if(categories == null)

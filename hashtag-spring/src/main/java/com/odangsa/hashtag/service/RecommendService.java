@@ -93,8 +93,6 @@ public class RecommendService {
 
         List<String> categories = gptService.chat(keywords);
 
-        for(String category : categories)
-            log.info("cat : "+category);
         return categories;
     }
 }
