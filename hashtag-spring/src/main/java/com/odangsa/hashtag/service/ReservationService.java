@@ -1,7 +1,7 @@
 package com.odangsa.hashtag.service;
 
-import com.odangsa.hashtag.domain.CategoryOrder;
-import com.odangsa.hashtag.domain.Customer;
+import com.odangsa.hashtag.domain.h2.CategoryOrder;
+import com.odangsa.hashtag.domain.h2.Customer;
 import com.odangsa.hashtag.dto.AddCategoryOrderRequest;
 import com.odangsa.hashtag.dto.ReservationRequest;
 import com.odangsa.hashtag.dto.ReservationResponse;

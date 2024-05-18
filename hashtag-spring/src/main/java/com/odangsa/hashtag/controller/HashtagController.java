@@ -3,6 +3,7 @@ package com.odangsa.hashtag.controller;
 import com.odangsa.hashtag.dto.ReservationRequest;
 import com.odangsa.hashtag.dto.ReservationResponse;
 import com.odangsa.hashtag.dto.ResultResponse;
+import com.odangsa.hashtag.persistence.maria.CategoryHashtagRepository;
 import com.odangsa.hashtag.service.RecommendService;
 import com.odangsa.hashtag.service.ReservationService;
 import com.odangsa.hashtag.common.Result;
@@ -21,6 +22,7 @@ public class HashtagController {
 
     private final ReservationService reservationService;
     private final RecommendService recommendService;
+    private final CategoryHashtagRepository categoryHashtagRepository;
 
     @PostMapping("/{userId}/hashtag")
     public ResponseEntity<?> requestHashtags(
@@ -28,10 +30,11 @@ public class HashtagController {
             @RequestParam MultipartFile picture,
             @RequestParam String place){
 
-//        List<String> categories = recommendService.recommendCategory(picture, place);
-        List<String> categories = null;
+        List<String> categories = recommendService.recommendCategory(picture, place);
 
         // Reservation
+        if(categories == null)
+            return ResponseEntity.internalServerError().body(new HashMap<String,Boolean>().put("success", false));
         ReservationRequest request = new ReservationRequest(userId, categories);
         boolean success = reservationService.registerResult(request);
         Map<String, Boolean> result = new HashMap<>();
@@ -50,7 +53,11 @@ public class HashtagController {
         List<String> dummy = new ArrayList<String>(List.of("#hello", "#hi", "#Guten Morgen"));
         AtomicInteger index = new AtomicInteger();
         List<Result> results = reservationResponse.getCategories().stream().map(e->
-            Result.builder().id(index.getAndIncrement()).title(e).hashtagList(dummy).build()).collect(Collectors.toList());
+            Result.builder()
+                    .id(index.getAndIncrement())
+                    .title(e)
+                    .hashtagList(categoryHashtagRepository.findAllByCategory(e).stream().map(h->h.getHashtagName()).collect(Collectors.toList()))
+                    .build()).collect(Collectors.toList());
         ResultResponse resultResponse = new ResultResponse(reservationResponse.isSuccess(), results);
 
         return ResponseEntity.ok().body(resultResponse);

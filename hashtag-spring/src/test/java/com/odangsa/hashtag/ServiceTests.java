@@ -46,11 +46,8 @@ public class ServiceTests {
             keywords.add("바다");
             keywords.add("안경");
 
-            String result = gptService.chat(keywords);
-            String[] strings = result.split("\n");
-            List<String> categories = new ArrayList<>();
-            for(String string : strings)
-                categories.add(string.split(":")[1].strip());
+            List<String> categories = gptService.chat(keywords);
+
             for(String category : categories)
                 log.info("check:"+category+"!");
 

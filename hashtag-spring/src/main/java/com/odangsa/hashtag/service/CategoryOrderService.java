@@ -1,8 +1,8 @@
 package com.odangsa.hashtag.service;
 
-import com.odangsa.hashtag.domain.CategoryOrder;
+import com.odangsa.hashtag.domain.h2.CategoryOrder;
 import com.odangsa.hashtag.dto.AddCategoryOrderRequest;
-import com.odangsa.hashtag.persistence.CategoryOrderRepository;
+import com.odangsa.hashtag.persistence.h2.CategoryOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

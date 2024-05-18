@@ -1,23 +1,18 @@
 spring:
-#  h2:
-#    console:
-#      enabled: true
-#      path: /h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://database-2.cbomu2egqtut.ap-northeast-2.rds.amazonaws.com:3306/odangsadb
+    jdbc-url: jdbc:mariadb://database-2.cbomu2egqtut.ap-northeast-2.rds.amazonaws.com:3306/odangsadb
     username: root
     password: odangsa1234
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-    hibernate:
-      naming:
-        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      ddl-auto: none
+  second-datasource:
+    driver-class-name: org.h2.Driver
+    jdbc-url: jdbc:h2:~/test
+    username: sa
+    password:
   servlet:
     multipart:
       enabled: true

@@ -1,12 +1,19 @@
 package com.odangsa.hashtag;
 
-import com.odangsa.hashtag.domain.*;
-import com.odangsa.hashtag.persistence.*;
+import com.odangsa.hashtag.domain.h2.CategoryOrder;
+import com.odangsa.hashtag.domain.h2.Customer;
+import com.odangsa.hashtag.domain.maria.Category;
+import com.odangsa.hashtag.domain.maria.Hashtag;
+import com.odangsa.hashtag.domain.maria.SuperEntity;
+import com.odangsa.hashtag.persistence.h2.CategoryOrderRepository;
+import com.odangsa.hashtag.persistence.h2.CustomerRepository;
+import com.odangsa.hashtag.persistence.maria.CategoryHashtagRepository;
+import com.odangsa.hashtag.persistence.maria.CategoryRepository;
+import com.odangsa.hashtag.persistence.maria.HashtagRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +63,7 @@ public class RepositoryTests {
             log.info("userid -> {}",x.getUserId());
             log.info("category -> {}",x.getCategory());
         });
+
     }
 
     @Test
@@ -78,7 +86,6 @@ public class RepositoryTests {
     }
 
     @Test
-    @Transactional
     public void CategoryHashtagTest(){
         List<Category> categories = categoryRepository.findAll();
         log.info("category : "+categories.get(0).getCategoryName());

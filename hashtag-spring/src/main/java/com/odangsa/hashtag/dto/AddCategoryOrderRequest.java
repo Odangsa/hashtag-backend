@@ -1,6 +1,6 @@
 package com.odangsa.hashtag.dto;
 
-import com.odangsa.hashtag.domain.CategoryOrder;
+import com.odangsa.hashtag.domain.h2.CategoryOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

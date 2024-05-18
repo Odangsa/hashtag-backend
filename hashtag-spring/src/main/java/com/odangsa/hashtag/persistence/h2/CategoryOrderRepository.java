@@ -1,12 +1,11 @@
-package com.odangsa.hashtag.persistence;
+package com.odangsa.hashtag.persistence.h2;
 
-import com.odangsa.hashtag.domain.CategoryOrder;
+import com.odangsa.hashtag.domain.h2.CategoryOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CategoryOrderRepository extends JpaRepository<CategoryOrder, Long> {
 //    Optional<CategoryOrder> findByUserId(String userId);

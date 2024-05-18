@@ -1,4 +1,4 @@
-package com.odangsa.hashtag.domain;
+package com.odangsa.hashtag.domain.h2;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

@@ -1,6 +1,6 @@
-package com.odangsa.hashtag.persistence;
+package com.odangsa.hashtag.persistence.maria;
 
-import com.odangsa.hashtag.domain.Hashtag;
+import com.odangsa.hashtag.domain.maria.Hashtag;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

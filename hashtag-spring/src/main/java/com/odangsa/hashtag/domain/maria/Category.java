@@ -1,4 +1,4 @@
-package com.odangsa.hashtag.domain;
+package com.odangsa.hashtag.domain.maria;
 
 import jakarta.persistence.*;
 import lombok.Getter;

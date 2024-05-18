@@ -16,6 +16,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -33,14 +34,20 @@ public class GptService {
         httpClient = HttpClient.newBuilder().build();
     }
 
-    public String chat(List<String> keywords) throws Exception{
+    public List<String> chat(List<String> keywords) throws Exception{
         ChatGptRequest chatGptRequest = ChatGptRequest.create(keywords);
         String requestBody = objectMapper.writeValueAsString(chatGptRequest);
         String responseBody = sendRequest(requestBody);
         log.info("debug : "+ responseBody);
         ChatGptResponse chatGptResponse = objectMapper.readValue(responseBody, ChatGptResponse.class);
 
-        return chatGptResponse.getText().orElseThrow();
+        String result = chatGptResponse.getText().orElseThrow();
+        String[] strings = result.split("\n");
+        List<String> categories = new ArrayList<>();
+        for(String string : strings)
+            categories.add(string.split(":")[1].strip());
+
+        return categories;
     }
 
     private String sendRequest(String requestBodyAsJson) throws Exception{

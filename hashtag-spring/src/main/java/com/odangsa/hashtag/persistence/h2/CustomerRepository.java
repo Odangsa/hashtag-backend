@@ -1,6 +1,6 @@
-package com.odangsa.hashtag.persistence;
+package com.odangsa.hashtag.persistence.h2;
 
-import com.odangsa.hashtag.domain.Customer;
+import com.odangsa.hashtag.domain.h2.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

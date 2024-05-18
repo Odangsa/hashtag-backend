@@ -1,7 +1,7 @@
 package com.odangsa.hashtag.service;
 
-import com.odangsa.hashtag.domain.Customer;
-import com.odangsa.hashtag.persistence.CustomerRepository;
+import com.odangsa.hashtag.domain.h2.Customer;
+import com.odangsa.hashtag.persistence.h2.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
