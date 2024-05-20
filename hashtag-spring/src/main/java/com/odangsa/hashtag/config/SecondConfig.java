@@ -42,7 +42,7 @@ public class SecondConfig {
 
         HashMap<String, Object> prop = new HashMap<>();
         prop.put("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        prop.put("hibernate.hbm2ddl.auto", "update");
+        prop.put("hibernate.hbm2ddl.auto", "create");
         prop.put("hibernate.format_sql", true);
         em.setJpaPropertyMap(prop);
 
