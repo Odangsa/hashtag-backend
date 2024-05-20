@@ -12,6 +12,7 @@ import com.odangsa.hashtag.persistence.maria.CategoryRepository;
 import com.odangsa.hashtag.persistence.maria.HashtagRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,9 +35,11 @@ public class RepositoryTests {
     @Autowired
     private HashtagRepository hashtagRepository;
 
+
     @Test
     public void saveCustomertTest(){
         //given
+        customerRepository.deleteAll();
         Customer customer = Customer.builder().userId("andrew").build();
         customerRepository.save(customer);
         //when
@@ -51,6 +54,7 @@ public class RepositoryTests {
     @Test
     public void saveCategoryOrderTest(){
         //given
+        categoryOrderRepository.deleteAll();
         CategoryOrder categoryOrder = CategoryOrder.builder().userId("andrew").category("box1").build();
         categoryOrderRepository.save(categoryOrder);
         CategoryOrder categoryOrder2 = CategoryOrder.builder().userId("andrew").category("box2").build();
@@ -69,6 +73,7 @@ public class RepositoryTests {
     @Test
     public void deleteCategoryOrderTest(){
         //given
+        categoryOrderRepository.deleteAll();
         CategoryOrder categoryOrder = CategoryOrder.builder().userId("andrew").category("box1").build();
         categoryOrderRepository.save(categoryOrder);
         CategoryOrder categoryOrder2 = CategoryOrder.builder().userId("andrew").category("box2").build();
