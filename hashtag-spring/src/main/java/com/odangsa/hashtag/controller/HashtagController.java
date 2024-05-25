@@ -51,13 +51,12 @@ public class HashtagController {
             return ResponseEntity.badRequest().body(null);
 
         // category 넣어주기
-        List<String> dummy = new ArrayList<String>(List.of("#hello", "#hi", "#Guten Morgen"));
         AtomicInteger index = new AtomicInteger();
         List<Result> results = reservationResponse.getCategories().stream().map(e->
             Result.builder()
                     .id(index.getAndIncrement())
                     .title(e)
-                    .hashtagList(categoryHashtagRepository.findAllByCategory(e).stream().map(h->h.getHashtagName()).collect(Collectors.toList()))
+                    .hashtagList(categoryHashtagRepository.findAllByCategory(e).stream().map(h->h.getHashtagName()).limit(30).collect(Collectors.toList()))
                     .build()).collect(Collectors.toList());
         ResultResponse resultResponse = new ResultResponse(reservationResponse.isSuccess(), results);
 
