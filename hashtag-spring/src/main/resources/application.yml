@@ -25,12 +25,3 @@ spring:
         options:
           model: gpt-3.5-turbo
           temperature: 0.7
-
-
-server:
-  port: 443
-  ssl:
-    key-store: keystore.p12
-    key-store-type: PKCS12
-    key-store-password: 123456
-    key-alisa: mysslkey
