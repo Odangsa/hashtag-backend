@@ -19,9 +19,8 @@ driver.get("https://www.instagram.com/accounts/login/")
 driver.implicitly_wait(10)
 
 # 인스타 로그인
-### ID : oodangsa
-### PW : qwer1234!!
-### ID : aua
+### ID : 
+### PW : 
 
 # ID 입력
 driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input').send_keys("aston97103")
