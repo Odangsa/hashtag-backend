@@ -4,9 +4,7 @@ from selenium.webdriver.chrome.options import Options
 
 import pymysql
 
-# sudo mysql -u root
-# mysql -u root -p / 1234
-DB = pymysql.connect(host='localhost', user='root', password='1234', db='test', charset='utf8')
+DB = pymysql.connect(host=host, user=user, password=password, db=db, charset='utf8')
 cur = DB.cursor()
 sql = "show databases"
 cur.execute(sql)
@@ -21,10 +19,6 @@ driver = webdriver.Chrome(options=chrome_options)
 # link 받아옴
 driver.get("https://www.instagram.com/accounts/login/")
 driver.implicitly_wait(10)
-
-# 인스타 로그인
-### ID : oodangsa
-### PW : qwer1234!!
 
 # ID 입력
 driver.find_element(By.XPATH, '//*[@id="loginForm"]/div/div[1]/div/label/input').send_keys("oodangsa")
